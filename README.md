@@ -7,5 +7,5 @@ Musiikkisivusto, jolla voi jakaa lempibiisejään ja keskustella niistä muiden 
 - Käyttäjä pystyy hakemaan kappaleita genren mukaan
 
 
-UPDATE 30.4.2025:
-Sovelluksen nykytilanne on kehittyvä. Sovelluksessa on nyt ominaisuus siirtyä etusivulta luomaan uutta ketjua, jossa keskustella musiikista. Etusivulta voi myös siirtyä selaamaan jo luotuja ketjuja tai hakea hakusanalla uutta ketjua. Tulevaisuudessa ketjuja voi merkitä musiikkigenren tai soittimen perusteella. Tämä pitää tosin vielä toteuttaa. Tietoturva on lähes olematon ja kaikennäköisiä ötököitä voi kaivaa esiin. Profiilia ei ole vielä luotu, mutta se tulee pian.
+UPDATE 30.3.2025:
+The current state of the application is evolving. The application now has the feature to navigate from the front page to create a new thread where users can discuss music. From the front page, users can also navigate to browse already created threads or search for a new thread using a keyword. In the future, threads can be tagged based on music genre or instrument. However, this still needs to be implemented. Security is almost non-existent, and various bugs can be uncovered. A profile feature has not yet been created, but it is coming soon.
