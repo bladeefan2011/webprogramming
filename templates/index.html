@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Musiikista nauttijoille</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    h1, h2, p {
+      margin: 20px 0;
+    }
+    a {
+      text-decoration: none;
+      color: blue;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    form {
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Musiikista nauttijoille</h1>
+
+  <p>
+    <a href="/register">Luo tunnus</a> |
+    {% if session.user_id %}
+    <a href="/logout">Kirjaudu ulos</a>
+    {% else %}
+    <a href="/login">Kirjaudu sisään</a>
+    {% endif %}
+  </p>
+
+  <hr />
+
+  {% if session.user_id %}
+  <h2><a href="/new_thread_page">Luo uusi ketju</a></h2>
+  {% endif %}
+  
+  <h2><a href="/view_threads">Näytä ketjut</a></h2>
+
+  <form action="/search" method="get">
+    <p>
+      Haku:
+      {% if query %}
+      <input type="text" name="query" value="{{ query }}" />
+      {% else %}
+      <input type="text" name="query" />
+      {% endif %}
+    </p>
+    <input type="submit" value="Hae" />
+  </form>
+
+  {% if query %}
+  <hr />
+  <h2>Hakua vastaavat ketjut:</h2>
+
+  <ul style="list-style-type:none; padding: 0;">
+  {% for result in results %}
+    <li>
+      <a href="/thread/{{ result.thread_id }}">
+        {{ result.thread_title }}
+      </a>
+      <br />
+      {{ result.username }} ({{ result.sent_at }})
+    </li>  
+  {% endfor %}
+  </ul>
+  {% endif %}
+</body>
+
+</html>

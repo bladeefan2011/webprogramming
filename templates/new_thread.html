@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Luo uusi ketju</title>
+</head>
+<body>
+    <h1>Luo uusi ketju</h1>
+    <form action="/create_thread" method="POST">
+        <label for="title">Otsikko:</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        <label for="content">Sisältö:</label>
+        <textarea id="content" name="content" required></textarea>
+        <br>
+        <button type="submit">Vahvista</button>
+    </form>
+    <a href="/">Takaisin etusivulle</a>
+</body>
+</html>
