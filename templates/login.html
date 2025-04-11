@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -19,6 +20,10 @@
     </p>
     <input type="submit" value="Kirjaudu" />
   </form>
+
+  {% if error %}
+  <p style="color:red;">{{ error }}</p>
+  {% endif %}
 
   <hr />
   <p>
