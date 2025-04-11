@@ -1,6 +1,5 @@
 import sqlite3
-from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session, url_for
 import config, forum
 from forum import add_user, get_user, verify_password
 
@@ -88,12 +87,15 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        user = get_user(username)
-        if user and verify_password(user['password_hash'], password):
-            session["user_id"] = user['id']
-            return redirect("/")
-        else:
-            return "Virheellinen tunnus tai/ja salasana"
+        try:
+            user = get_user(username)
+            if user and verify_password(user['password_hash'], password):
+                session["user_id"] = user['id']
+                return redirect("/")
+            else:
+                return render_template("login.html", error="Virheellinen tunnus tai salasana")
+        except IndexError:
+            return render_template("login.html", error="Virheellinen tunnus tai salasana")
 
 @app.route("/logout")
 def logout():
@@ -105,7 +107,6 @@ def search():
     query = request.args.get("query")
     results = forum.search(query) if query else []
     return render_template("index.html", query=query, results=results)
-
 
 @app.route("/new_thread_page")
 def new_thread_page():
