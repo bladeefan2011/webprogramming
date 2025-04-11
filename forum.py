@@ -78,3 +78,31 @@ def search(query):
                    m.content LIKE ?
              ORDER BY m.sent_at DESC"""
     return db.query(sql, ["%" + query + "%"])
+
+
+
+def get_user_by_id(user_id):
+    sql = "SELECT id, username, profile_image, bio FROM users WHERE id = ?"
+    return db.query(sql, [user_id])[0]
+
+def get_user_threads(user_id):
+    sql = "SELECT id, title FROM threads WHERE user_id = ?"
+    return db.query(sql, [user_id])
+
+def get_user_messages(user_id):
+    sql = """SELECT m.id, m.content, m.thread_id
+             FROM messages m
+             WHERE m.user_id = ?
+             ORDER BY m.sent_at DESC"""
+    return db.query(sql, [user_id])
+
+def get_user_stats(user_id):
+    sql_threads = "SELECT COUNT(*) FROM threads WHERE user_id = ?"
+    sql_messages = "SELECT COUNT(*) FROM messages WHERE user_id = ?"
+    thread_count = db.query(sql_threads, [user_id])[0]['COUNT(*)']
+    message_count = db.query(sql_messages, [user_id])[0]['COUNT(*)']
+    return thread_count, message_count
+
+def update_profile(user_id, profile_image, bio):
+    sql = "UPDATE users SET profile_image = ?, bio = ? WHERE id = ?"
+    db.execute(sql, [profile_image, bio, user_id])

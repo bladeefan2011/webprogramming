@@ -1,7 +1,8 @@
+import os
 import sqlite3
 from flask import Flask, redirect, render_template, request, session, url_for
 import config, forum
-from forum import add_user, get_user, verify_password
+from forum import add_user, get_user, verify_password, get_user_threads, get_user_messages, get_user_stats, update_profile, get_user_by_id
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -125,3 +126,26 @@ def create_thread():
 def view_threads():
     threads = forum.get_threads()
     return render_template("view_threads.html", threads=threads)
+
+@app.route("/profile/<int:user_id>")
+def profile(user_id):
+    user = get_user_by_id(user_id)
+    threads = get_user_threads(user_id)
+    messages = get_user_messages(user_id)
+    thread_count, message_count = get_user_stats(user_id)
+    return render_template("profile.html", user=user, threads=threads, messages=messages, thread_count=thread_count, message_count=message_count)
+
+@app.route("/update_profile", methods=["POST"])
+def update_profile_route():
+    user_id = session["user_id"]
+    profile_image = request.files["profile_image"]
+    bio = request.form["bio"]
+
+    if profile_image:
+        profile_image_filename = f"profile_images/{user_id}_{profile_image.filename}"
+        profile_image.save(os.path.join("static", profile_image_filename))
+    else:
+        profile_image_filename = None
+
+    update_profile(user_id, profile_image_filename, bio)
+    return redirect(url_for("profile", user_id=user_id))
