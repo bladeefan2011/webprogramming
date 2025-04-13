@@ -15,9 +15,10 @@
       max-width: 150px;
       border-radius: 50%;
     }
-    form {
-      display: inline-block;
-      margin-top: 20px;
+    /* Add this style to remove the bullet points from lists */
+    ul {
+      list-style-type: none;
+      padding: 0;
     }
   </style>
 </head>
@@ -31,22 +32,18 @@
   <img src="{{ url_for('static', filename='default_profile.png') }}" alt="Profiilikuva">
   {% endif %}
   
-  <h2>Itsestäni</h2>
-  <p>{{ user.bio }}</p>
+  <h2>Biografia</h2>
+  <p>
+    {% if user.bio %}
+      {{ user.bio }}
+    {% else %}
+      Käyttäjä ei ole lisännyt biografiaa.
+    {% endif %}
+  </p>
   
   {% if session.user_id == user.id %}
-  <h2>Muokkaa profiilia</h2>
-  <form action="/update_profile" method="post" enctype="multipart/form-data">
-    <p>
-      Profiilikuva: <br />
-      <input type="file" name="profile_image" />
-    </p>
-    <p>
-      Itsestäni: <br />
-      <textarea name="bio" rows="5" cols="40">{{ user.bio }}</textarea>
-    </p>
-    <input type="submit" value="Päivitä profiili" />
-  </form>
+  <h2></h2>
+  <a href="{{ url_for('edit_profile_page') }}">Muokkaa profiilia</a>
   {% endif %}
   
   <h2>Tilastot</h2>

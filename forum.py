@@ -23,15 +23,19 @@ def get_user(username):
     return db.query(sql, [username])[0]
 
 def get_threads():
-    sql = """SELECT t.id, t.title, COUNT(m.id) total, MAX(m.sent_at) last
-             FROM threads t, messages m
-             WHERE t.id = m.thread_id
+    sql = """SELECT t.id, t.title, COUNT(m.id) total, MAX(m.sent_at) last, g.name tag_name
+             FROM threads t
+             LEFT JOIN messages m ON t.id = m.thread_id
+             LEFT JOIN tags g ON t.tag_id = g.id
              GROUP BY t.id
              ORDER BY t.id DESC"""
     return db.query(sql)
 
 def get_thread(thread_id):
-    sql = "SELECT id, title FROM threads WHERE id = ?"
+    sql = """SELECT t.id, t.title, g.name tag_name
+             FROM threads t
+             LEFT JOIN tags g ON t.tag_id = g.id
+             WHERE t.id = ?"""
     return db.query(sql, [thread_id])[0]
 
 def get_messages(thread_id):
@@ -67,17 +71,26 @@ def remove_message(message_id):
 
 
 def search(query):
-    sql = """SELECT m.id message_id,
+    sql = """
+    SELECT DISTINCT m.id AS message_id,
                     m.thread_id,
-                    t.title thread_title,
+                    t.title AS thread_title,
                     m.sent_at,
-                    u.username
-             FROM threads t, messages m, users u
-             WHERE t.id = m.thread_id AND
-                   u.id = m.user_id AND
-                   m.content LIKE ?
-             ORDER BY m.sent_at DESC"""
-    return db.query(sql, ["%" + query + "%"])
+                    u.username,
+                    g.name AS tag_name
+    FROM threads t
+    LEFT JOIN messages m ON t.id = m.thread_id
+    LEFT JOIN users u ON u.id = m.user_id
+    LEFT JOIN tags g ON t.tag_id = g.id
+    WHERE m.content LIKE ? OR
+          t.title LIKE ? OR
+          u.username LIKE ? OR
+          g.name LIKE ?
+    ORDER BY m.sent_at DESC
+    """
+    like_query = "%" + query + "%"
+    return db.query(sql, [like_query, like_query, like_query, like_query])
+
 
 
 
@@ -106,3 +119,32 @@ def get_user_stats(user_id):
 def update_profile(user_id, profile_image, bio):
     sql = "UPDATE users SET profile_image = ?, bio = ? WHERE id = ?"
     db.execute(sql, [profile_image, bio, user_id])
+
+
+def add_tag(name):
+    sql = "INSERT INTO tags (name) VALUES (?)"
+    try:
+        db.execute(sql, [name])
+    except sqlite3.IntegrityError:
+        pass  # Tag already exists
+
+def get_tag_id(name):
+    sql = "SELECT id FROM tags WHERE name = ?"
+    result = db.query(sql, [name])
+    if result:
+        return result[0]['id']
+    return None
+
+def add_thread(title, content, user_id, tag_name=None):
+    if tag_name:
+        add_tag(tag_name)
+        tag_id = get_tag_id(tag_name)
+    else:
+        tag_id = None
+
+    sql = "INSERT INTO threads (title, user_id, tag_id) VALUES (?, ?, ?)"
+    db.execute(sql, [title, user_id, tag_id])
+    thread_id = db.last_insert_id()
+    add_message(content, user_id, thread_id)
+    return thread_id
+

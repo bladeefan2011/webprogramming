@@ -16,7 +16,11 @@
 
 <body>
   <h1>{{ thread.title }}</h1>
-
+  
+  {% if thread.tag_name %}
+  <p>Tunnisteet: {{ thread.tag_name }}</p>
+  {% endif %}
+  
   <hr />
   {% for message in messages %}
   <p>

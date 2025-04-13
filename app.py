@@ -117,9 +117,10 @@ def new_thread_page():
 def create_thread():
     title = request.form["title"]
     content = request.form["content"]
+    tag_name = request.form.get("tag")
     user_id = session["user_id"]
 
-    thread_id = forum.add_thread(title, content, user_id)
+    thread_id = forum.add_thread(title, content, user_id, tag_name)
     return redirect("/thread/" + str(thread_id))
 
 @app.route("/view_threads")
@@ -138,8 +139,8 @@ def profile(user_id):
 @app.route("/update_profile", methods=["POST"])
 def update_profile_route():
     user_id = session["user_id"]
-    profile_image = request.files["profile_image"]
-    bio = request.form["bio"]
+    profile_image = request.files.get("profile_image")
+    bio = request.form.get("bio")
 
     if profile_image:
         profile_image_filename = f"profile_images/{user_id}_{profile_image.filename}"
@@ -149,3 +150,9 @@ def update_profile_route():
 
     update_profile(user_id, profile_image_filename, bio)
     return redirect(url_for("profile", user_id=user_id))
+
+@app.route("/edit_profile")
+def edit_profile_page():
+    user_id = session["user_id"]
+    user = get_user_by_id(user_id)
+    return render_template("edit_profile.html", user=user)

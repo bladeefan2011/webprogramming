@@ -11,6 +11,9 @@
             <li>
                 <a href="/thread/{{ thread.id }}">{{ thread.title }}</a>
                 (Yhteensä {{ thread.total }} viestiä)
+                {% if thread.tag_name %}
+                    <span> - Tunnisteet: {{ thread.tag_name }}</span>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
