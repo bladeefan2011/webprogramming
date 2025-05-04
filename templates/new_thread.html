@@ -1,23 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Luo uusi ketju</title>
+  <meta charset="UTF-8">
+  <title>Luo uusi ketju</title>
+  <link rel="stylesheet" href="/static/styles.css"> <!-- Linkki ulkoiseen CSS-tiedostoon -->
 </head>
-<body>
-    <h1>Luo uusi ketju</h1>
-    <form action="/create_thread" method="POST">
-        <label for="title">Otsikko:</label>
-        <input type="text" id="title" name="title" required>
-        <br>
-        <label for="content">Sisältö:</label>
-        <textarea id="content" name="content" required></textarea>
-        <br>
-        <label for="tag">Merkintä (esim. musiikkigenre tai soitin):</label>
-        <input type="text" id="tag" name="tag">
-        <br>
+
+<body class="dark-theme">
+  <div class="container">
+    <div class="header">
+      <h1>Luo uusi ketju</h1>
+    </div>
+
+    <div class="content">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+      <form action="/create_thread" method="POST">
+        <p>
+          <label for="title">Otsikko:</label><br>
+          <input type="text" id="title" name="title" required maxlength="100">
+        </p>
+        <p>
+          <label for="content">Sisältö:</label><br>
+          <textarea id="content" name="content" required maxlength="2000"></textarea>
+        </p>
+        <p>
+          <label for="tag">Merkintä (esim. musiikkigenre tai soitin):</label><br>
+          <input type="text" id="tag" name="tag">
+        </p>
         <button type="submit">Vahvista</button>
-    </form>
-    <a href="/">Takaisin etusivulle</a>
+      </form>
+
+      <hr />
+      <p>
+        <a href="/">Takaisin etusivulle</a>
+      </p>
+    </div>
+  </div>
 </body>
+
 </html>

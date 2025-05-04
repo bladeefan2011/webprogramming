@@ -1,6 +1,7 @@
 import db
 import hashlib
 import os
+import sqlite3
 
 def hash_password(password):
     salt = os.urandom(16)
@@ -92,8 +93,6 @@ def search(query):
     return db.query(sql, [like_query, like_query, like_query, like_query])
 
 
-
-
 def get_user_by_id(user_id):
     sql = "SELECT id, username, profile_image, bio FROM users WHERE id = ?"
     return db.query(sql, [user_id])[0]
@@ -126,7 +125,7 @@ def add_tag(name):
     try:
         db.execute(sql, [name])
     except sqlite3.IntegrityError:
-        pass  # Tag already exists
+        pass 
 
 def get_tag_id(name):
     sql = "SELECT id FROM tags WHERE name = ?"
@@ -148,3 +147,48 @@ def add_thread(title, content, user_id, tag_name=None):
     add_message(content, user_id, thread_id)
     return thread_id
 
+
+def get_threads_paginated(offset, limit):
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM threads")
+    total_threads = cursor.fetchone()[0]
+
+    cursor.execute("""SELECT t.id, t.title, COUNT(m.id) total, MAX(m.sent_at) last, g.name tag_name
+                      FROM threads t
+                      LEFT JOIN messages m ON t.id = m.thread_id
+                      LEFT JOIN tags g ON t.tag_id = g.id
+                      GROUP BY t.id
+                      ORDER BY t.id DESC
+                      LIMIT ? OFFSET ?""", (limit, offset))
+    threads = cursor.fetchall()
+    conn.close()
+
+    return threads, total_threads
+
+
+def get_recent_threads(limit=5):
+    sql = """SELECT t.id, t.title, MAX(m.sent_at) AS last_message
+             FROM threads t
+             LEFT JOIN messages m ON t.id = m.thread_id
+             GROUP BY t.id
+             ORDER BY last_message DESC
+             LIMIT ?"""
+    return db.query(sql, [limit])
+
+
+def get_user_role(user_id):
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT role FROM users WHERE id = ?", (user_id,))
+    result = cursor.fetchone()
+    conn.close()
+    if result:
+        return result[0]
+    else:
+        return None
+
+def update_user_role(user_id, role):
+    sql = "INSERT OR REPLACE INTO user_roles (user_id, role) VALUES (?, ?)"
+    db.execute(sql, [user_id, role])

@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <title>Viestin poistaminen</title>
+  <link rel="stylesheet" href="/static/styles.css"> <!-- Linkki ulkoiseen CSS-tiedostoon -->
 </head>
 
-<body>
-  <h1>Viestin poistaminen</h1>
+<body class="dark-theme">
+  <div class="container">
+    <div class="header">
+      <h1>Viestin poistaminen</h1>
+    </div>
 
-  <form action="/remove/{{ message.id }}" method="post">
-    <p>
-      Haluatko poistaa viestin?
-    </p>
-    <input type="submit" name="continue" value="Jatka" />
-    <input type="submit" name="cancel" value="Peruuta" />
-  </form>
+    <div class="content">
+      <form action="/remove/{{ message.id }}" method="post">
+        <p>
+          Haluatko poistaa viestin?
+        </p>
+        <input type="submit" name="continue" value="Jatka" />
+        <input type="submit" name="cancel" value="Peruuta" />
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>

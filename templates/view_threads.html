@@ -3,20 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Kaikki ketjut</title>
+    <link rel="stylesheet" href="/static/styles.css"> <!-- Linkki ulkoiseen CSS-tiedostoon -->
 </head>
-<body>
-    <h1>Kaikki ketjut</h1>
-    <ul>
-        {% for thread in threads %}
-            <li>
-                <a href="/thread/{{ thread.id }}">{{ thread.title }}</a>
-                (Yhteensä {{ thread.total }} viestiä)
-                {% if thread.tag_name %}
-                    <span> - Tunnisteet: {{ thread.tag_name }}</span>
+<body class="dark-theme">
+    <div class="container">
+        <div class="header">
+            <h1>Kaikki ketjut</h1>
+        </div>
+
+        <div class="content">
+            <ul>
+                {% for thread in threads %}
+                    <li>
+                        <a href="/thread/{{ thread[0] }}">{{ thread[1] }}</a>
+                        (Yhteensä {{ thread[2] }} viestiä)
+                        {% if thread[4] %}
+                            <span> - Tunnisteet: {{ thread[4] }}</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+    
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="{{ url_for('view_threads', page=page-1) }}">Edellinen</a>
                 {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-    <a href="/">Takaisin etusivulle</a>
+                <span>Sivu {{ page }} / {{ total_pages }}</span>
+                {% if page < total_pages %}
+                    <a href="{{ url_for('view_threads', page=page+1) }}">Seuraava</a>
+                {% endif %}
+            </div>
+            
+            
+            {% if not session.user_id %}
+                <p>
+                    <a href="/login">Kirjaudu sisään</a> laittaaksesi uuden ketjun.
+                </p>
+            {% endif %}
+
+            <hr />
+            <p>
+                <a href="/">Takaisin etusivulle</a>
+            </p>
+        </div>
+    </div>
 </body>
 </html>

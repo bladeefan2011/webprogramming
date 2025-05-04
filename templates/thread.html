@@ -1,60 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <title>{{ thread.title }}</title>
-  <style>
-    a {
-      text-decoration: none;
-      color: blue;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/styles.css"> <!-- Linkki ulkoiseen CSS-tiedostoon -->
 </head>
 
-<body>
-  <h1>{{ thread.title }}</h1>
-  
-  {% if thread.tag_name %}
-  <p>Tunnisteet: {{ thread.tag_name }}</p>
-  {% endif %}
-  
-  <hr />
-  {% for message in messages %}
-  <p>
-    <a href="/profile/{{ message.user_id }}">{{ message.username }}</a> ({{ message.sent_at }}):
-  </p>
-  <p>
-    {{ message.content }}
-  </p>
-  {% if message.user_id == session.user_id %}
-  <p>
-    <a href="/edit/{{ message.id }}">Muokkaa</a> |
-    <a href="/remove/{{ message.id }}">Poista</a>
-  </p>
-  {% endif %}
-  <hr />
-  {% endfor %}
+<body class="dark-theme">
+  <div class="container">
+    <div class="header">
+      <h1>{{ thread.title }}</h1>
+    </div>
 
-  {% if session.user_id %}
-  <h2>Uusi viesti</h2>
+    <div class="content">
+      {% if thread.tag_name %}
+      <p>Tunnisteet: {{ thread.tag_name }}</p>
+      {% endif %}
+      
+      <hr />
+      {% for message in messages %}
+      <p>
+        <a href="/profile/{{ message.user_id }}">{{ message.username }}</a> ({{ message.sent_at }}):
+      </p>
+      <p>
+        {{ message.content | show_lines }}
+      </p>
+      {% if message.user_id == session.user_id %}
+      <p>
+        <a href="/edit/{{ message.id }}">Muokkaa</a> |
+        <a href="/remove/{{ message.id }}">Poista</a>
+      </p>
+      {% endif %}
+      <hr />
+      {% endfor %}
 
-  <form action="/new_message" method="post">
-    <p>
-      Viesti:<br />
-      <textarea name="content" rows="5" cols="40"></textarea>
-    </p>
-    <input type="hidden" name="thread_id" value="{{ thread.id }}" />
-    <input type="submit" value="Lähetä" />
-  </form>
-  <hr />
-  {% endif %}
+      {% if session.user_id %}
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flash-messages">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
 
-  <p>
-    <a href="/">Etusivulle</a>
-  </p>
+      <h2>Uusi viesti</h2>
+
+      <form action="/new_message" method="post">
+        <p>
+          Viesti:<br />
+          <textarea name="content" rows="5" cols="40" maxlength="500" required></textarea>
+        </p>
+        <input type="hidden" name="thread_id" value="{{ thread.id }}" />
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+        <input type="submit" value="Lähetä" />
+      </form>
+      
+      <hr />
+      {% endif %}
+
+      <p>
+        <a href="/">Etusivulle</a>
+      </p>
+    </div>
+  </div>
 </body>
 
-</html> 
+</html>

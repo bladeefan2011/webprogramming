@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <title>Viestin muokkaaminen</title>
+  <link rel="stylesheet" href="/static/styles.css"> 
 </head>
 
-<body>
-  <h1>Viestin muokkaaminen</h1>
+<body class="dark-theme">
+  <div class="container">
+    <div class="header">
+      <h1>Viestin muokkaaminen</h1>
+    </div>
 
-  <form action="/edit/{{ message.id }}" method="post">
-    <p>
-      Viesti:<br />
-      <textarea name="content" rows="5" cols="40">{{ message.content }}</textarea>
-    </p>
-    <input type="submit" value="Vahvista" />
-  </form>
+    <div class="content">
+      <form action="/edit/{{ message.id }}" method="post">
+        <p>
+          Viesti:<br />
+          <textarea name="content" rows="5" cols="40">{{ message.content }}</textarea>
+        </p>
+        <input type="submit" value="Vahvista" />
+      </form>
+    </div>
+  </div>
 </body>
 
 </html>

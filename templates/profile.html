@@ -1,73 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <title>Käyttäjän profiili</title>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-    }
-    h1, h2, p {
-      margin: 20px 0;
-    }
-    img {
-      max-width: 150px;
-      border-radius: 50%;
-    }
-    /* Add this style to remove the bullet points from lists */
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/styles.css">
 </head>
 
-<body>
-  <h1>Käyttäjän profiili: {{ user.username }}</h1>
-  
-  {% if user.profile_image %}
-  <img src="{{ url_for('static', filename=user.profile_image) }}" alt="Profiilikuva">
-  {% else %}
-  <img src="{{ url_for('static', filename='default_profile.png') }}" alt="Profiilikuva">
-  {% endif %}
-  
-  <h2>Biografia</h2>
-  <p>
-    {% if user.bio %}
-      {{ user.bio }}
-    {% else %}
-      Käyttäjä ei ole lisännyt biografiaa.
-    {% endif %}
-  </p>
-  
-  {% if session.user_id == user.id %}
-  <h2></h2>
-  <a href="{{ url_for('edit_profile_page') }}">Muokkaa profiilia</a>
-  {% endif %}
-  
-  <h2>Tilastot</h2>
-  <p>Lisätyt viestit: {{ message_count }}</p>
-  <p>Lisätyt ketjut: {{ thread_count }}</p>
-  
-  <h2>Lisätyt ketjut</h2>
-  <ul>
-    {% for thread in threads %}
-      <li><a href="/thread/{{ thread.id }}">{{ thread.title }}</a></li>
-    {% endfor %}
-  </ul>
-  
-  <h2>Lisätyt viestit</h2>
-  <ul>
-    {% for message in messages %}
-      <li><a href="/thread/{{ message.thread_id }}#message-{{ message.id }}">{{ message.content }}</a></li>
-    {% endfor %}
-  </ul>
+<body class="dark-theme">
+  <div class="container">
+    <div class="header">
+      <h1>Käyttäjän profiili: {{ user.username }}</h1>
+    </div>
 
-  <hr />
-  <p>
-    <a href="/">Etusivu</a>
-  </p>
+    <div class="content">
+      {% if user.profile_image %}
+      <img src="{{ url_for('static', filename=user.profile_image) }}" alt="Profiilikuva">
+      {% else %}
+      <img src="{{ url_for('static', filename='default_profile.png') }}" alt="Käyttäjä ei ole laittanut profiilikuvaa">
+      {% endif %}
+
+      <h2>Biografia</h2>
+      <p>
+        {% if user.bio %}
+          {{ user.bio }}
+        {% else %}
+          Käyttäjä ei ole lisännyt biografiaa.
+        {% endif %}
+      </p>
+
+      {% if session.user_id == user.id %}
+      <h2></h2>
+      <a href="{{ url_for('edit_profile_page') }}">Muokkaa profiilia</a>
+      {% endif %}
+
+      <h2>Rooli</h2>
+      <p>Rooli: {{ role }}</p>
+
+
+      <h2>Tilastot</h2>
+      <p>Lisätyt viestit: {{ message_count }}</p>
+      <p>Lisätyt ketjut: {{ thread_count }}</p>
+
+      <h2>Lisätyt ketjut</h2>
+      <ul>
+        {% for thread in threads %}
+          <li><a href="/thread/{{ thread.id }}">{{ thread.title }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <h2>Lisätyt viestit</h2>
+      <ul>
+        {% for message in messages %}
+          <li><a href="/thread/{{ message.thread_id }}#message-{{ message.id }}">{{ message.content }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <hr />
+      <p>
+        <a href="/">Etusivu</a>
+      </p>
+    </div>
+  </div>
 </body>
 
 </html>
