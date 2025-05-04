@@ -31,3 +31,6 @@ The current state of the application is evolving. The application now has the fe
 
 UPDATE 13.4.2025:
 The current state is even better than last time. New functions, such as tags have been implemented. Users can tag posts by whichever they find suitable for the discussion. The promised profile feature has been added, and users can submit their own profile pictures and type out a little biography to let others know what's up. The app has an improved search, allowing users to find posts by their tags, poster or content. Still, some problems arise, such as cybersecurity and other malicious intent. The application is still very fragile, so better safety measures must be implemented. These security improvements will come soon, as soon as I find the other elements complete.
+
+UPDATE 4.5.2025
+This is the final update regarding the course. The app is finally in it's finished state. Added paging to the threads page, displaying only 8 threads per page. Edited the CSS to make the program more visually appealing. Fixed bugs. The app is complete. 
