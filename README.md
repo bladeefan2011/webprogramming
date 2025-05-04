@@ -1,10 +1,10 @@
 # webprogramming
 
-Musiikkisivusto, jolla voi jakaa lempibiisejään ja keskustella niistä muiden käyttäjien kanssa
-- Käyttäjä pystyy kirjautumaan omalle käyttäjälleen
-- Käyttäjä pystyy muokkaamaan profiiliaan ja lisäämään sinne omia kiinnostuksenkohteita
-- Käyttäjä voi luoda postauksia, johon muut voivat kommentoida
-- Käyttäjä pystyy hakemaan kappaleita genren mukaan
+Music website where users can share their favorite songs and discuss them with others
+- The user can log into their account
+- The user can edit their profile and add their interests
+- The user can create posts that others can comment on
+- The user can search for songs by genre or instrument or any other relevant topic
 
 
 UPDATE 30.3.2025:
