@@ -6,6 +6,25 @@ Music website where users can share their favorite songs and discuss them with o
 - The user can create posts that others can comment on
 - The user can search for songs by genre or instrument or any other relevant topic
 
+# Instructions for using the app:
+Make a folder called "test":
+mdir test
+
+Go to said folder:
+cd test
+
+Enable venv:
+python3 -m venv venv
+
+Change the source to venv:
+source venv/bin/activate
+
+Install flask:
+pip install flask
+
+Run the app:
+flask run
+
 
 UPDATE 30.3.2025:
 The current state of the application is evolving. The application now has the feature to navigate from the front page to create a new thread where users can discuss music. From the front page, users can also navigate to browse already created threads or search for a new thread using a keyword. In the future, threads can be tagged based on music genre or instrument. However, this still needs to be implemented. Security is almost non-existent, and various bugs can be uncovered. A profile feature has not yet been created, but it is coming soon.
