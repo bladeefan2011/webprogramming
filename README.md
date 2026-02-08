@@ -1,36 +1,59 @@
-# webprogramming
+# WebProgramming
 
-Music website where users can share their favorite songs and discuss them with others
-- The user can log into their account
-- The user can edit their profile and add their interests
-- The user can create posts that others can comment on
-- The user can search for songs by genre or instrument or any other relevant topic
+This project is a **music website** where users can share their favorite songs and discuss them with others.  
 
-# Instructions for using the app:
-Make a folder called "test":
-mdir test
+### Features
 
-Go to said folder:
-cd test
+- Users can log into their account  
+- Users can edit their profile and add their interests  
+- Users can create posts that others can comment on  
+- Users can search for songs by genre, instrument, or any other relevant topic  
 
-Enable venv:
+---
+
+## Setup Instructions
+
+Follow these steps to get the app running on your local machine.
+
+### 1. Clone the repository
+
+```bash
+git clone git@github.com:bladeefan2011/webprogramming.git
+```
+
+### 2. Change into the project directory
+
+```bash
+cd webprogramming
+```
+
+### 3. Create a virtual environment
+
+```bash
 python3 -m venv venv
+```
 
-Change the source to venv:
+### 4. Activate the virtual environment
+
+# On Linux/macOS
+```bash
 source venv/bin/activate
+```
+# On Windows (PowerShell)
+```bash
+venv\Scripts\Activate.ps1
+```
 
-Install flask:
+### 5. Install Flask
+
+```bash
 pip install flask
+```
 
-Run the app:
+### 6. Run the app
+
+```bash
 flask run
+```
 
-
-UPDATE 30.3.2025:
-The current state of the application is evolving. The application now has the feature to navigate from the front page to create a new thread where users can discuss music. From the front page, users can also navigate to browse already created threads or search for a new thread using a keyword. In the future, threads can be tagged based on music genre or instrument. However, this still needs to be implemented. Security is almost non-existent, and various bugs can be uncovered. A profile feature has not yet been created, but it is coming soon.
-
-UPDATE 13.4.2025:
-The current state is even better than last time. New functions, such as tags have been implemented. Users can tag posts by whichever they find suitable for the discussion. The promised profile feature has been added, and users can submit their own profile pictures and type out a little biography to let others know what's up. The app has an improved search, allowing users to find posts by their tags, poster or content. Still, some problems arise, such as cybersecurity and other malicious intent. The application is still very fragile, so better safety measures must be implemented. These security improvements will come soon, as soon as I find the other elements complete.
-
-UPDATE 4.5.2025
-This is the final update regarding the course. The app is finally in it's finished state. Added paging to the threads page, displaying only 8 threads per page. Edited the CSS to make the program more visually appealing. Fixed bugs. The app is complete. 
+You can now access the app at **http://127.0.0.1:5000/**
